@@ -21,7 +21,7 @@ firebaseScriptDB.onload = () => {
     storageBucket: "rusukbakopetrus.firebasestorage.app",
     messagingSenderId: "616900062598",
     appId: "1:616900062598:web:c57da9b5b4986317afd007",
-    databaseURL: "https://rusukbakopetrus-default-rtdb.firebaseio.com"
+    databaseURL: "https://rusukbakopetrus-default-rtdb.asia-southeast1.firebasedatabase.app"
   };
 
   // Inisialisasi Firebase
