@@ -114,6 +114,16 @@ document.body.addEventListener("click", () => {
                     objectRect.top <= targetRect.bottom && 
                     objectRect.bottom >= targetRect.top;
 
+    console.log("objectCenterX:", objectCenterX);
+    console.log("targetCenterX:", targetCenterX);
+    console.log("objectCenterY:", objectCenterY);
+    console.log("targetCenterY:", targetCenterY);
+    console.log("offsetX:", offsetX);
+    console.log("offsetY:", offsetY);
+    console.log("Base Tolerance:", tolerance);
+    console.log("overlap:", overlap);
+
+
     if (overlap && offsetX <= tolerance && offsetY <= tolerance) {
       document.body.style.backgroundColor = "#4CAF50";
       endGame(true);
