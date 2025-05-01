@@ -1,5 +1,3 @@
-// js/game.js dengan sinkronisasi Firebase
-
 const query = new URLSearchParams(window.location.search);
 const level = parseInt(query.get("level")) || 1;
 
@@ -26,13 +24,23 @@ if (countdownText) countdownText.innerText = countdownNumber;
 // Ambil setting dari Firebase
 function fetchSettingsFromFirebase() {
   if (!window.db) return alert("Firebase belum siap");
+
+  console.log(`📥 Mengambil setting level ${level} dari Firebase...`);
   db.ref(`settings/level${level}`).once("value", snapshot => {
     const data = snapshot.val();
     if (data) {
       speed = parseInt(data.speed || 20);
       tolerance = parseInt(data.tolerance || 8);
       rewardConfig = data;
+
+      console.log(`✅ Setting berhasil diambil:`);
+      console.log(`→ Speed: ${speed}`);
+      console.log(`→ Tolerance: ${tolerance}`);
+      console.log(`→ Reward: ${rewardConfig.reward}`);
+    } else {
+      console.log("⚠️ Tidak ada data setting untuk level ini.");
     }
+
     startCountdown();
   });
 }
@@ -79,6 +87,8 @@ function startGame() {
 function moveObject() {
   if (!isMoving || gameEnded) return;
 
+  console.log("🎯 Object bergerak dengan speed:", speed);
+
   const targetRect = target.getBoundingClientRect();
   const objectRect = object.getBoundingClientRect();
 
@@ -109,20 +119,15 @@ document.body.addEventListener("click", () => {
     const offsetX = Math.abs((objectRect.left + objectRect.width / 2) - (targetRect.left + targetRect.width / 2));
     const offsetY = Math.abs((objectRect.top + objectRect.height / 2) - (targetRect.top + targetRect.height / 2));
 
-    const overlap = objectRect.left <= targetRect.right && 
-                    objectRect.right >= targetRect.left && 
-                    objectRect.top <= targetRect.bottom && 
+    const overlap = objectRect.left <= targetRect.right &&
+                    objectRect.right >= targetRect.left &&
+                    objectRect.top <= targetRect.bottom &&
                     objectRect.bottom >= targetRect.top;
 
-    console.log("objectCenterX:", objectCenterX);
-    console.log("targetCenterX:", targetCenterX);
-    console.log("objectCenterY:", objectCenterY);
-    console.log("targetCenterY:", targetCenterY);
     console.log("offsetX:", offsetX);
     console.log("offsetY:", offsetY);
-    console.log("Base Tolerance:", tolerance);
+    console.log("tolerance:", tolerance);
     console.log("overlap:", overlap);
-
 
     if (overlap && offsetX <= tolerance && offsetY <= tolerance) {
       document.body.style.backgroundColor = "#4CAF50";
@@ -162,7 +167,7 @@ function endGame(win) {
       document.getElementById("winRewardCode").textContent = rewardConfig.reward || "Kupon Hadiah";
       document.getElementById("winRewardIcon").src = rewardConfig.icon || "assets/images/winner.png";
       document.getElementById("winRewardIcon").alt = rewardConfig.reward;
-    
+
       const qrContainer = document.createElement("div");
       qrContainer.className = "selfie-qr";
       qrContainer.innerHTML = `
@@ -170,7 +175,7 @@ function endGame(win) {
         <img src='https://api.qrserver.com/v1/create-qr-code/?data=https://adrian.github.io/tangkap/camera.html&size=160x160' alt='QR Selfie' />
       `;
       document.getElementById("winModal").appendChild(qrContainer);
-    
+
       document.getElementById("winModal").classList.remove("hidden");
       document.getElementById("winModal").classList.add("show");
     }, 2000);
@@ -236,7 +241,7 @@ function animateLose() {
   }, 5500);
 }
 
-// Tunggu Firebase ready sebelum mulai
+// Tunggu Firebase siap sebelum mulai
 const waitFirebase = setInterval(() => {
   if (window.db) {
     clearInterval(waitFirebase);
