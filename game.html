@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Game Tangkap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="theme-color" content="#520000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Style & Manifest -->
+  <script src="js/firebase.js"></script>
+  <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css?v=2">
+</head>
+
+<body class="game">
+  <div class="background"></div>
+  <img src="assets/images/frame.png" class="frame top-left" />
+  <img src="assets/images/frame.png" class="frame top-right" />
+  <img src="assets/images/frame.png" class="frame bottom-left" />
+  <img src="assets/images/frame.png" class="frame bottom-right" />
+
+  <div id="gameContainer">
+    <div id="title-game">KALO NGNI JAGO <br> COBA TANGKA NIH BABI <br> SEMASO DI KANDANG</div>
+    <img id="target" src="assets/images/target-area1.png" alt="Target" />
+    <img id="object" src="assets/images/logo.png" alt="Object" />
+    <div id="countdownOverlay">
+      <div id="countdownText"></div>
+    </div>  
+    <div id="timer"><span id="timeLeft"></span></div>
+    <p class="subtitle-bawah">@sotorusukbakopetrus</p>
+  </div>
+
+  <!-- Modal Win -->
+  <div id="winModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="reward-container">
+        <img id="winRewardIcon" src="" alt="Reward Icon" class="reward-icon">
+      </div>
+      <!-- <div class="selfie-qr">
+        <p style="color:#fff; margin-top: 10px;">Scan QR ini untuk ambil selfie:</p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://adrian.github.io/tangkap/camera.html&size=160x160" alt="QR Selfie">
+      </div> -->
+      <h2 id="modalTitle">Berhasil</h2>
+      <p id="modalText">Ngana dapa dapa free</p>
+      <p id="winRewardCode" class="reward-code"></p>
+      <button onclick="window.location.href='index.html'" class="pushable">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">Kembali Ke Menu</span>
+      </button>
+      <div id="winnerForm">
+        <input type="text" id="nama" placeholder="Nama" required />
+        <input type="text" id="instagram" placeholder="@Instagram" />
+        <input type="tel" id="telepon" placeholder="No. Telepon" required />
+        <button onclick="saveWinner()">Simpan Data</button>
+        <button onclick="window.location.href='camera.html'">Ambil Selfie</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Lose -->
+  <div id="loseModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>⏰ Waktu Habis!</h2>
+      <p>Yuk coba lagi untuk menangkan hadiah!</p>
+      <div class="button-group">
+        <button class="pushable" onclick="window.location.reload()">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">Coba Lagi</span>
+        </button>
+        <button class="pushable" onclick="window.location.href='index.html'">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">Kembali Ke Menu</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sounds -->
+  <audio id="bgm" src="assets/sounds/bgm.mp3" autoplay loop preload="auto"></audio>></audio>
+  <audio id="winSound" src="assets/sounds/win.mp3"></audio>
+  <audio id="loseSound" src="assets/sounds/lose.mp3"></audio>
+  <audio id="countdownSound" src="assets/sounds/countdown.mp3" autoplay  preload="auto"></audio>></audio>
+  <audio id="tapSound" src="assets/sounds/tap.mp3"></audio>
+
+  <!-- Scripts -->
+  <script src="js/game.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Hide loader when fully loaded
+  const loader = document.getElementById("loader");
+  if (loader) loader.style.display = "none";
+
+  // Reset background & content height
+  const bg = document.querySelector(".background");
+  const content = document.querySelector(".content");
+  if (bg) bg.style.height = "100vh";           // <- pakai 100vh
+  if (content) content.style.height = "100vh"; // <- pakai 100vh
+
+  // Scroll to top (pakai 3 cara)
+  window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+
+  // Exit fullscreen if any
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch((err) => {
+      console.warn("Tidak bisa keluar dari fullscreen:", err);
+    });
+  }
+
+  // Center object if exists
+  const obj = document.getElementById("object");
+  if (obj) {
+    const posX = (window.innerWidth - 100) / 2;
+    obj.style.left = posX + "px";
+  }
+});
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('Service Worker registered!', reg))
+        .catch(err => console.log('Service Worker failed:', err));
+    }
+  </script>
+</body>
+</html>

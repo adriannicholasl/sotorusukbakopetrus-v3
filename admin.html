@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Soto Rusuk Ba' Ko Petrus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#520000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="preload" href="assets/images/background-potrait.jpg" as="image">
+  <link rel="preload" href="assets/images/background-lanscape.jpg" as="image">
+
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <script src="js/firebase.js"></script>
+
+  <link rel="manifest" href="manifest.json">
+</head>
+<body class="admin-page">
+  <div class="background"></div>
+  <div class="content">
+    <div class="overlay">
+      <h2 class="title">Dashboard Admin</h2>
+
+      <div class="form-section">
+        <label for="levelSelect">Pilih Level</label>
+        <select id="levelSelect">
+          <option value="1">Level 1</option>
+          <option value="2">Level 2</option>
+          <option value="3">Level 3</option>
+          <option value="4">Level 4</option>
+        </select>
+
+        <label for="speedInput">Kecepatan</label>
+        <input type="number" id="speedInput" placeholder="Contoh: 15" />
+
+        <label for="toleranceInput">Toleransi</label>
+        <input type="number" id="toleranceInput" placeholder="Contoh: 5" />
+
+        <label for="rewardInput">Nama Hadiah</label>
+        <input type="text" id="rewardInput" />
+
+        <label for="iconInput">Gambar Hadiah</label>
+        <input type="file" id="iconInput" accept="image/*" />
+        <img id="previewIcon" src="" alt="Preview Hadiah" class="preview-image" />
+
+        <button class="pushable" onclick="saveSettings()">
+          <span class="shadow"></span>
+          <span class="edge"></span>
+          <span class="front">Simpan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
